@@ -6,7 +6,9 @@ const response = require('../response/index')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+
 const app = express()
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser())
@@ -26,12 +28,12 @@ app.post('/login', function (req, res) {
     sql.query(`SELECT * FROM u_user WHERE username='${req.body.userName}'`, function (error, results, fields) {
         if (error) throw error
         else if (JSON.parse(JSON.stringify(results))[0].password === req.body.passWord) {
-            res.send(response(200, token({
+            res.send(response(200, true, token({
                 username: req.body.userName,
                 passWord: req.body.passWord
             }), '登陆成功'))
         } else {
-            res.send('登陆失败')
+            res.send(response(200, false, null, '登陆失败'))
         }
 
     })
