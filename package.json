@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "serve": "node src/main/com/index.js"
+    "serve": "node src/main/app/index.js"
   },
   "devDependencies": {
     "body-parser": "^1.18.3",
