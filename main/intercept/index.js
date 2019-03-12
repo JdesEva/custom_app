@@ -2,11 +2,11 @@
  *  Token 拦截验证
  */
 
-const token = require('../token/index')
+const token = require('../components/token')
 
 function token_intercept(req, res, next) {
     res.header("Content-Type", "application/json;charset=utf-8")
-    if (req.url === '/login') {
+    if (req.url === '/login' || req.url === '/logout') {
         next()
     } else {
         const result = token({}, false, req.headers.authorization)

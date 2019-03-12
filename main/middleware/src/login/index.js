@@ -4,9 +4,9 @@
 
 const express = require('express')
 
-const token = require('../token/index')
-const sql = require('../sqlconnection/index')
-const response = require('../response/index')
+const token = require('../../../components/token')
+const sql = require('../../../components/sqlconnection')
+const response = require('../../../components/response')
 
 const router = express.Router()
 

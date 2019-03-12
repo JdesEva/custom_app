@@ -1,4 +1,4 @@
-const response = require('../response/index')
+const response = require('../../../components/response')
 const express = require('express')
 
 const router = express.Router()
