@@ -1,25 +1,21 @@
 /**
- *  Token 拦截验证
+ *  http拦截器 by jdes on 2019-03-12
  */
 
 const token = require('../components/token')
 
-function token_intercept(req, res, next) {
-    res.header("Content-Type", "application/json;charset=utf-8")
+function intercept(req, res, next) {
     if (req.url === '/login' || req.url === '/logout') {
         next()
     } else {
-        const result = token({}, false, req.headers.authorization)
-        console.log(result, typeof result)
-        if (typeof result === 'string' && result.indexOf('401') > -1) {
-            res.status(401) //设置响应状态,代表token过期 or token 错误
-            res.send(result)
-        } else {
-            //此处进行 正确的token验证
+        token.verify(req.headers.authorization).then(re => {
+            //进行token 验证
+            console.log(re)
             next()
-        }
+        }).catch(() => {
+            res.sendStatus(401) //设置响应状态,代表token过期 or token 错误
+        })
     }
-
 }
 
-module.exports = token_intercept
+module.exports = intercept

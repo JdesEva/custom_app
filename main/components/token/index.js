@@ -1,22 +1,35 @@
+/**
+ * token 模块 by jdes on 2019-03-13
+ */
+
 const jwt = require('jsonwebtoken')
-const response = require('../response/index')
 
-const secret = 'WXBHGASKXAYA98213hsnuuad' //密钥，可以使用证书
+const secret = 'WXBHGASKXAYYXBNSYASDNYEJA982YYADATWJ13hsnuuad' //密钥，可以使用证书
 
-/**生成Token 有效期 1小时 */
-function token(payload, mode = true, token = null) {
-    if (mode) {
-        return jwt.sign(payload, secret, { expiresIn: 3600 })
-    } else {
-        return jwt.verify(token, secret, function (err, decoded) {
-            if (err) {
-                return response(401, false, null, '无权限')
-            } else {
-                return decoded
-            }
+const timeExpires = 10 //过期时间(单位：秒)
+
+const token = {
+    encrypt: function (payload) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                var Authorization = jwt.sign(payload, secret, { expiresIn: timeExpires })
+                if (!Authorization) resolve(Authorization)
+                reject(() => {
+                    throw new Error('The Token Generation Failed!')
+                })
+            }, 2000)
+        })
+    },
+    verify: function (token) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                jwt.verify(token, secret, function (err, decoded) {
+                    if (err) reject(err)
+                    resolve(decoded)
+                })
+            }, 2000)
         })
     }
-
 }
 
 module.exports = token

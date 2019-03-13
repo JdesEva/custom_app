@@ -1,4 +1,6 @@
-/** http响应体  */
+/**
+ * response by jdes on 2019-03-13
+ */
 
 function response(code, success, data, msg) {
     const res = {

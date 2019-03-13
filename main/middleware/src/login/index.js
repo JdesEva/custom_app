@@ -1,5 +1,5 @@
 /***
- * 登陆模块 
+ * 登陆模块  by jdes on 2019-03-13 
  */
 
 const express = require('express')
@@ -17,13 +17,14 @@ router.post('/login', function (req, res) {
     sql.query(`SELECT * FROM u_user WHERE username='${req.body.username}'`, function (error, results, fields) {
         if (error) throw error
         else if (JSON.parse(JSON.stringify(results))[0].password === req.body.password) {
-
             // 操作数据库 修改 登陆状态
-
-            res.send(response(200, true, token({
+            token.encrypt({
                 username: req.body.username,
                 password: req.body.password
-            }), '登陆成功'))
+            }).then(re => {
+                res.send(response(200, true, re, '登陆成功'))
+            })
+
         } else {
             res.send(response(200, false, null, '验证失败'))
         }
@@ -35,7 +36,7 @@ router.post('/login', function (req, res) {
  * 登出
  */
 router.post('/logout', function (req, res) {
-    const username = token({}, false, req.headers.authorization).username
+    const username = token.verify(req.headers.authorization).username
 
     //操作数据库 修改登陆状态
 

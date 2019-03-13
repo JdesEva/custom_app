@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser')
 const config = require('./config')
 
 /**
- * 调用Token 拦截器
+ * 调用http拦截器
  */
 
 const intercept = require('./intercept')
