@@ -12,4 +12,22 @@ const pool = mysql.createPool({
     database: config.sql_database
 })
 
-module.exports = pool
+/**
+ * 
+ * @param {string} sql SQL语句
+ */
+function query (sql) {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((error, connect) => {
+            if (error) reject(error)
+            connect.query(sql, (err, res) => {
+                if (err) reject(err)
+                resolve(JSON.parse(JSON.stringify(res)))
+            })
+            connect.release()
+        })
+    })
+}
+
+
+module.exports = query
