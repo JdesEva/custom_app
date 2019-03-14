@@ -5,6 +5,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const morgan = require('morgan')
+
+const options = require('./morgan')
+
 
 /**
  * 读取配置文件
@@ -20,7 +24,7 @@ const intercept = require('./intercept')
 /**
  * 读取中间件
  */
-const middleware = require('./middleware')
+const middlewares = require('./middleware')
 
 /**
  * 启动Express服务器
@@ -34,14 +38,28 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
+/**
+ * 日志输出
+ */
+
+app.use(morgan('combined', options))
+
+
+
+/**
+ * 拦截器
+ * 
+ */
 app.use(intercept)
 
 /**
- * 调用中间件
+ * 循环调用中间件
  */
-middleware.forEach(row => {
+
+middlewares.forEach(row => {
     app.use(row)
 })
+
 
 
 app.listen(config.port, function () {

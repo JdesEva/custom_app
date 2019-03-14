@@ -4,18 +4,21 @@
  */
 
 const fs = require('fs')
-
 function dir_f(path) {
     return fs.readdirSync(path)
 }
 
 const dir = dir_f('./main/middleware/src')
 
-var middleware = []
+var middlewares = []
+
 
 dir.forEach(row => {
-    var mod = require('./src/' + row)
-    middleware.push(mod)
+    
+    var fn = require('./src/' + row)
+
+    middlewares.push(fn)
+
 })
 
-module.exports = middleware
+module.exports = middlewares
