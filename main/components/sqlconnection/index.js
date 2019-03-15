@@ -5,20 +5,28 @@
 const mysql = require('mysql')
 const config = require('../../config')
 
-const pool = mysql.createPool({
-    host: config.sql_host,
-    user: config.sql_user,
-    password: config.sql_password,
-    database: config.sql_database
-})
+/**
+ * 连接池函数
+ */
+function pool (){
+    return new Promise((resolve,reject)=>{
+        resolve(mysql.createPool({
+            host: config.sql_host,
+            user: config.sql_user,
+            password: config.sql_password,
+            database: config.sql_database
+        }))
+    })
+}
 
 /**
  * 
- * @param {string} sql SQL语句
+ * @param {string} sql 执行SQL语句
  */
-function query (sql) {
+async function query (sql) {
+    var sqlPool = await pool()
     return new Promise((resolve, reject) => {
-        pool.getConnection((error, connect) => {
+        sqlPool.getConnection((error, connect) => {
             if (error) reject(error)
             connect.query(sql, (err, res) => {
                 if (err) reject(err)

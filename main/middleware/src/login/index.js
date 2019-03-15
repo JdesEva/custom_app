@@ -11,55 +11,31 @@ const response = require('../../../components/response')
 const router = express.Router()
 
 
-
-
 /**
  * 登陆
  */
 router.post('/login', async (req, res) =>{
-    // return new Promise((resolve, reject) => {
-    //     pool.getConnection(function(err,sql){
-    //         if (err) reject(error)
-    //         sql.query(`SELECT * FROM u_user WHERE username='${req.body.username}'`, function (error, results, fields) {
-    //             if (error) reject(error)
-    //             else if (JSON.parse(JSON.stringify(results))[0].password === req.body.password) {
-
-    //                 // 操作数据库 修改 登陆状态
-
-    //                 token.encrypt({
-    //                     username: req.body.username,
-    //                     password: req.body.password
-    //                 }).then(re => {
-    //                     resolve(res.send(response(200, true, re, '登陆成功')))
-    //                 }).catch(er => {
-    //                     reject(er)
-    //                 })
-    //             } else {
-    //                 resolve(res.send(response(200, false, null, '验证失败')))
-    //             }
-    //         })
-    //         sql.release() //释放进程
-    //         console.log(5674)
-    //     })
-    // })
-
-    var rows = await query(`SELECT * FROM u_user WHERE username='${req.body.username}'`)
-    console.log(rows)
-
+    try {
+        var rows = await query(`SELECT * FROM u_user WHERE username='${req.body.username}'`)
+        if(rows[0].password === req.body.password){
+            var Authorization = await token.encrypt({username:req.body.usernam,password:req.body.password})
+            res.send(response(200,true,Authorization,'登陆成功'))
+        }
+    }catch(err){
+        throw err
+    }
 })
 
 
 /**
  * 登出
  */
-router.post('/logout', function (req, res) {
-    //操作数据库
-    var a = 1
-    return new Promise((resolve, reject) => {
-        if (a === 1) resolve(res.send(response(200, true, null, '登出成功')))
-        reject(new Error('error'))
-
-    })
+router.get('/logout', function (req, res) {
+    try{
+        res.send(response(200,true,null,'登出成功'))
+    }catch(err){
+        throw err
+    }
 })
 
 module.exports = router
