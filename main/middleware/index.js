@@ -1,9 +1,11 @@
 /**
- * 遍历中间件,并导出中间件
+ * 遍历中间件,并导出中间件 by jdes on 2019-03-18
  * 
  */
 
 const fs = require('fs')
+
+
 function dir_f(path) {
     return fs.readdirSync(path)
 }
