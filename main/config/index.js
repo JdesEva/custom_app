@@ -1,10 +1,10 @@
 const config = {
     'hostname': 'localhost', //服务器域名
-    'port': '4500', //端口号
+    'port': '9876', //端口号
     'sql_host': 'localhost', //数据库主机名 MySQL
     'sql_user': 'root', //数据库用户名
-    'sql_password': '0dfa9f06d3', //数据库密码
-    'sql_database': 'joa_view' // 数据库名称
+    'sql_password': '123456', //数据库密码
+    'sql_database': 'custom' // 数据库名称
 }
 
 module.exports = config

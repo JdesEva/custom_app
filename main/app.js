@@ -26,6 +26,7 @@ const intercept = require('./intercept')
  */
 const middlewares = require('./middleware')
 
+
 /**
  * 启动Express服务器
  */
@@ -59,7 +60,6 @@ app.use(intercept)
 middlewares.forEach(row => {
     app.use(row)
 })
-
 
 
 app.listen(config.port, function () {

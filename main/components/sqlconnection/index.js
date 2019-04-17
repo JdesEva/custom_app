@@ -8,8 +8,8 @@ const config = require('../../config')
 /**
  * 连接池函数
  */
-function pool (){
-    return new Promise((resolve,reject)=>{
+function pool() {
+    return new Promise(resolve => {
         resolve(mysql.createPool({
             host: config.sql_host,
             user: config.sql_user,
@@ -20,15 +20,16 @@ function pool (){
 }
 
 /**
- * 
- * @param {string} sql 执行SQL语句
+ * 运行SQL,并防止SQL注入
+ * @param {SQL模型} sql 
+ * @param {参数} inserts (type:Array)
  */
-async function query (sql) {
+async function query(sql, inserts) {
     var sqlPool = await pool()
     return new Promise((resolve, reject) => {
         sqlPool.getConnection((error, connect) => {
             if (error) reject(error)
-            connect.query(sql, (err, res) => {
+            connect.query(mysql.format(sql, inserts), (err, res) => {
                 if (err) reject(err)
                 resolve(JSON.parse(JSON.stringify(res)))
             })

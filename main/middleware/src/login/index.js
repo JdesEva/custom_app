@@ -16,13 +16,21 @@ const router = express.Router()
  */
 router.post('/login', async (req, res) => {
     try {
-        var rows = await query(`SELECT * FROM u_user WHERE username='${req.body.username}'`)
-        if (rows[0].password === req.body.password) {
-            var Authorization = await token.encrypt({ username: req.body.usernam, password: req.body.password })
-            res.send(response(200, true, Authorization, '登陆成功'))
+        var rows = await query('SELECT * FROM ?? WHERE ?? = ?', ['u_user', 'username', req.body.username])
+        if (rows.length > 0 && rows[0].password === req.body.password) {
+            var Authorization = await token.encrypt({ username: req.body.usernam, password: req.body.password }) //生成Token
+            var ip = req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip.replace(/::ffff:/, '') //获取客户端IP
+            var result = await query('UPDATE ?? SET ?? = ?, ?? = ? WHERE ?? = ?', ['u_user', 'login_ip', ip, 'login_time', new Date(), 'username', req.body.username]) //更新数据库
+            if (result) {
+                res.send(response(200, true, Authorization, '登陆成功'))
+            } else {
+                res.send(response(200, false, null, '登陆失败'))
+            }
+        } else {
+            res.send(response(200, false, null, '登陆失败'))
         }
     } catch (err) {
-        throw err
+        res.sendStatus(500).send('后台异常, 请联系研发人员')
     }
 })
 

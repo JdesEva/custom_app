@@ -11,11 +11,9 @@ const timeExpires = 3600 //过期时间(单位：秒)
 const token = {
     encrypt: function (payload) {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                var Authorization = jwt.sign(payload, secret, { expiresIn: timeExpires })
-                if (Authorization) resolve(Authorization)
-                reject(new Error('The Token Generation Failed!'))
-            }, 2000)
+            var Authorization = jwt.sign(payload, secret, { expiresIn: timeExpires })
+            if (Authorization) resolve(Authorization)
+            reject(new Error('The Token Generation Failed!'))
         })
     },
     verify: function (token) {

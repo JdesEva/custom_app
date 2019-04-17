@@ -5,7 +5,6 @@
 
 const fs = require('fs')
 
-
 function dir_f(path) {
     return fs.readdirSync(path)
 }
@@ -16,7 +15,7 @@ var middlewares = []
 
 
 dir.forEach(row => {
-    
+
     var fn = require('./src/' + row)
 
     middlewares.push(fn)
