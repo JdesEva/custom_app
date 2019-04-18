@@ -5,7 +5,7 @@
 const token = require("../components/token")
 
 async function intercept(req, res, next) {
-  if (req.url === "/login") {
+  if (req.url === "/login" || req.url === '/register') {
     next()
   } else {
     try {

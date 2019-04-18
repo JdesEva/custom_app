@@ -1,17 +1,18 @@
 {
     "restartable": "rs",
     "ignore": [
-    ".git",
-    ".svn",
-    "node_modules/**/node_modules",
-    "logs/*",
-    ".vscode",
-    ".idea"
+        ".git",
+        ".svn",
+        "node_modules/**/node_modules",
+        "logs/*",
+        ".vscode",
+        ".idea",
+        ".log"
     ],
     "verbose": true,
     "exec": "node main/app.js",
     "env": {
-    "NODE_ENV": "development"
+        "NODE_ENV": "development"
     },
     "ext": "ejs js json"
-    }
+}
