@@ -20,12 +20,12 @@ const router = express.Router()
 /**
  * 登陆
  */
-router.post('/login', async (req, res, next) => {
+router.post('/user/login', async (req, res, next) => {
     try {
         var rows = await query('SELECT * FROM ?? WHERE ?? = ?', ['u_user', 'username', req.body.username])
         if (rows.length > 0 && rows[0].password === req.body.password) {
             //生成Token
-            var Authorization = await token.encrypt({ username: req.body.usernam, password: req.body.password })
+            var Authorization = await token.encrypt({ username: req.body.username, password: req.body.password })
             //获取客户端IP
             var ip = req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip.replace(/::ffff:/, '')
             //更新数据库
@@ -54,7 +54,7 @@ router.post('/login', async (req, res, next) => {
 /**
  * 登出
  */
-router.get('/logout', async function (req, res) {
+router.get('/user/logout', async function (req, res) {
     try {
         res.send(response(200, true, null, '登出成功'))
     } catch (err) {
@@ -63,7 +63,7 @@ router.get('/logout', async function (req, res) {
 })
 
 
-router.post('/register', async function (req, res, next) {
+router.post('/user/register', async function (req, res, next) {
     try {
         var rows = await query('SELECT * FROM ?? WHERE ?? = ?', ['u_user', 'username', req.body.username])
         if (rows.length === 0) {

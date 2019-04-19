@@ -12,6 +12,8 @@ const Pool = redisPool('RedisPool', {
     perform_checks: false
 })
 
+console.log('The redis Pool is running successfully!')
+
 const expire = 3600 //数据过期时间,秒
 
 module.exports = {
@@ -30,7 +32,7 @@ module.exports = {
             Pool.get(key, function (err, res) {
                 if (err) reject(-1)
                 var res = res === null ? 'null' : res.trim() //null不能进行trim()操作,必须排除
-                var reg = /^[\{|\[](.)*[\]|\}]$/
+                var reg = /^(\{|\[)(.)*(\]|\})$/
                 if (res === 'true' || res === 'false' || res === 'null' || reg.test(res)) {
                     resolve(JSON.parse(res))
                 } else if (res === 'undefined') {
