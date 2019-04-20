@@ -8,7 +8,9 @@
   "private": false,
   "scripts": {
     "serve": "node main/app.js",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "pm2": "pm2 start main/app.js",
+    "stop":"pm2 stop all"
   },
   "devDependencies": {
     "body-parser": "^1.18.3",
