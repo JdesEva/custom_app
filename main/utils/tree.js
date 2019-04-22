@@ -3,6 +3,11 @@
  */
 
 module.exports = {
+    /**
+     * List -> Tree
+     * @param {原始List结构数据} data 
+     * @param {父节点Id字段(SQL字段)} perKey 
+     */
     __ToTree: function (data, perKey) {
         var map = {}
         /**
@@ -17,6 +22,7 @@ module.exports = {
          */
 
         var result = []
+
         data.forEach(row => {
             var parent = map[row[perKey]] //查找当前数据的pid,即父元素在不在，如果在证明他是子集，扔进该元素的children中即可，否则扔进顶级
             if (parent) {
