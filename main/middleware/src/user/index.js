@@ -62,7 +62,9 @@ router.get('/user/logout', async function (req, res) {
     }
 })
 
-
+/**
+ * 注册
+ */
 router.post('/user/register', async function (req, res, next) {
     try {
         var rows = await query('SELECT * FROM ?? WHERE ?? = ?', ['u_user', 'username', req.body.username])
@@ -81,7 +83,17 @@ router.post('/user/register', async function (req, res, next) {
     } catch (err) {
         res.sendStatus(500)
     }
+})
 
+
+/**
+ * 查询用户数据
+ */
+
+router.get('/user/selectByCondition', async function (req, res, next) {
+    var rows = await query('SELECT * FROM ??', ['u_user'])
+    if (rows) res.send(response(200, true, rows, '查询成功'))
+    next()
 })
 
 module.exports = router

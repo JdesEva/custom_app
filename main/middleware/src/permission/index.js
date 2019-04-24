@@ -15,7 +15,7 @@ const query = require('@/sqlconnection')
 const response = require('@/response')
 const redis = require('@/redis')
 const tool = require('&/tree')
-
+const queryParams = require('&/query')
 
 
 const router = express.Router()
@@ -25,7 +25,7 @@ const router = express.Router()
  * 查询菜单
  */
 router.get('/permission/selectByCondition', async function (req, res, next) {
-    var rows = await query('SELECT * FROM ??', ['u_permission'])
+    var rows = await query('SELECT * FROM ?? ORDER BY ??', ['u_permission', 'index'])
     var tree = tool.__ToTree(rows, 'per_id')
     res.send(response(200, true, tree, '查询成功'))
 })
@@ -38,19 +38,32 @@ router.post('/permission/insert', async function (req, res, next) {
     var rows = await query('SELECT * FROM ??', ['u_permission'])
     if (Object.keys(params).length === 0) {
         if (rows.length === 0) {
-            var cr = await query('INSERT INTO ?? (??,??,??,??) VALUES (?,?,?,?)', ['u_permission', 'id', 'path', 'name', 'create_time', '0', '', '新建节点', new Date()])
+            var cr = await query('INSERT INTO ?? (??,??,??,??) VALUES (?,?,?,?)', ['u_permission', ...queryParams({ id: guid(), path: '', name: '新建节点', create_time: new Date() }, false)])
             if (cr) res.send(response(200, true, null, '根节点创建成功'))
         } else {
             res.send(response(200, false, null, '根节点已经存在'))
         }
     } else {
-        if (params.id) {
-            var update = await query('UPDATE ?? SET ?? = ?, ?? = ?,??=?,??=?,??=? WHERE ?? = ?', ['u_permission', 'per_path', params.per_path, 'group', params.group, 'per_id', params.per_id, 'path', params.path, 'name', params.name, 'id', params.id])
-            if (update) res.send(response(200, true, null, '节点更新成功'))
-        } else {
-            var add = await query('INSERT INTO ?? (??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?)', ['u_permission', 'id', 'path', 'name', 'create_time', 'per_id', 'group', 'per_path', guid(), params.path, params.name, new Date(), params.per_id, params.group, params.per_path])
+        if (!params.id) {
+            var add = await query('INSERT INTO ?? (??,??,??,??,??,??) VALUES (?,?,?,?,?,?)', ['u_permission', ...queryParams({ ...params, id: guid() }, false)])
+            console.log(queryParams({ ...params, id: guid() }, false))
             if (add) res.send(response(200, true, null, '节点创建成功'))
         }
+    }
+    next()
+})
+
+
+/**
+ * 更新节点
+ */
+router.post('/permission/update', async function (req, res, next) {
+    var params = req.body
+    if (params.id) {
+        var update = await query(`UPDATE ?? SET ?? = ?, ?? = ?,??=?,??=?,??=?,??=? WHERE ?? = ?`, ['u_permission', ...queryParams(params), 'id', params.id])
+        if (update) res.send(response(200, true, null, '节点更新成功'))
+    } else {
+        res.send(response(200, false, null, '节点id不能为空'))
     }
     next()
 })
