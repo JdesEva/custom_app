@@ -46,7 +46,6 @@ router.post('/permission/insert', async function (req, res, next) {
     } else {
         if (!params.id) {
             var add = await query('INSERT INTO ?? (??,??,??,??,??,??) VALUES (?,?,?,?,?,?)', ['u_permission', ...queryParams({ ...params, id: guid() }, false)])
-            console.log(queryParams({ ...params, id: guid() }, false))
             if (add) res.send(response(200, true, null, '节点创建成功'))
         }
     }
