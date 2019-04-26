@@ -25,7 +25,7 @@ const router = express.Router()
  * 查询菜单
  */
 router.get('/permission/selectByCondition', async function (req, res, next) {
-    var rows = await query('SELECT * FROM ?? ORDER BY ??', ['u_permission', 'index'])
+    var rows = await query('SELECT * FROM ?? ORDER BY ??', ['u_permission', 'per_order'])
     var tree = tool.__ToTree(rows, 'per_id')
     res.send(response(200, true, tree, '查询成功'))
 })
@@ -59,7 +59,7 @@ router.post('/permission/insert', async function (req, res, next) {
 router.post('/permission/update', async function (req, res, next) {
     var params = req.body
     if (params.id) {
-        var update = await query(`UPDATE ?? SET ?? = ?, ?? = ?,??=?,??=?,??=?,??=? WHERE ?? = ?`, ['u_permission', ...queryParams(params), 'id', params.id])
+        var update = await query(`UPDATE ?? SET ?? = ?, ?? = ?,??=?,??=?,??=?,??=?,??=?,??=? WHERE ?? = ?`, ['u_permission', ...queryParams(params), 'id', params.id])
         if (update) res.send(response(200, true, null, '节点更新成功'))
     } else {
         res.send(response(200, false, null, '节点id不能为空'))

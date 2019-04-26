@@ -18,7 +18,7 @@ async function intercept(req, res, next) {
         res.sendStatus(401)
       }
     } catch (err) {
-      res.sendStatus(401) //设置响应状态,代表token过期 or token 解析错误
+      res.sendStatus(500) //设置响应状态,代表token过期 or token 解析错误
     }
   }
 }
