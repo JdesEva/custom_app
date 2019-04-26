@@ -91,7 +91,9 @@ router.post('/user/register', async function (req, res, next) {
  */
 
 router.get('/user/selectByCondition', async function (req, res, next) {
-    var rows = await query('SELECT * FROM ??', ['u_user'])
+    var rows = await query(`SELECT ??,??,??,??,??,DATE_FORMAT(??,'%Y-%m-%d %H:%i:%s') AS ??,DATE_FORMAT(??,'%Y-%m-%d %H:%i:%s') AS ?? FROM u_user`,
+        ['username', 'id', 'telphone', 'create_ip', 'login_ip', 'login_time', 'login_time', 'create_time', 'create_time', 'u_user']
+    )
     if (rows) res.send(response(200, true, rows, '查询成功'))
     next()
 })

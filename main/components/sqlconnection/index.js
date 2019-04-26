@@ -16,7 +16,7 @@ async function query(sql, inserts) {
             if (error) reject(error)
             connect.query(mysql.format(sql, inserts), (err, res) => {
                 if (err) reject(err)
-                resolve(JSON.parse(JSON.stringify(res)))
+                resolve(res)
             })
             connect.release()
         })
