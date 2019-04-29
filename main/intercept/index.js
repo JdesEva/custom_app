@@ -12,7 +12,9 @@ async function intercept(req, res, next) {
     try {
       var results = await token.verify(req.headers.authorization)
       var user = await redis.get(results.username)
-      if (results.password === user[0].password) {
+      var ip = req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip.replace(/::ffff:/, '')
+      if (ip === '::1') ip = '127.0.0.1'
+      if (results.password === user[0].password && results.login_ip === ip && ip === user[0].login_ip) { //判断token中密码,ip是否一致
         next()
       } else {
         res.sendStatus(401)

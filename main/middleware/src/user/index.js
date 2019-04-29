@@ -24,10 +24,10 @@ router.post('/user/login', async (req, res, next) => {
     try {
         var rows = await query('SELECT * FROM ?? WHERE ?? = ?', ['u_user', 'username', req.body.username])
         if (rows.length > 0 && rows[0].password === req.body.password) {
-            //生成Token
-            var Authorization = await token.encrypt({ username: req.body.username, password: req.body.password })
             //获取客户端IP
             var ip = req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip.replace(/::ffff:/, '')
+            //生成Token
+            var Authorization = await token.encrypt({ username: req.body.username, password: req.body.password, login_ip: ip })
             //更新数据库
             var result = await query('UPDATE ?? SET ?? = ?, ?? = ? WHERE ?? = ?', ['u_user', 'login_ip', ip, 'login_time', new Date(), 'username', req.body.username])
             //将当前登陆成功的用户信息取出放入redis
