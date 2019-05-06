@@ -10,7 +10,8 @@
     "serve": "node main/app.js",
     "dev": "nodemon",
     "pm2": "pm2 start main/app.js",
-    "stop":"pm2 stop all"
+    "stop": "pm2 stop all",
+    "start": "pm2 start pm2.json"
   },
   "devDependencies": {
     "body-parser": "^1.18.3",
