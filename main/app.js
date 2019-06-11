@@ -6,9 +6,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
+const path = require('path')
 
 const options = require('./morgan')
-
 
 /**
  * 读取配置文件
@@ -26,7 +26,6 @@ const intercept = require('./intercept')
  */
 const middlewares = require('./middleware')
 
-
 /**
  * 启动Express服务器
  */
@@ -39,17 +38,17 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
+app.use('/public', express.static(path.join(__dirname, 'public'))) //启动静态服务
+
 /**
  * 日志输出
  */
 
 app.use(morgan('combined', options))
 
-
-
 /**
  * 拦截器
- * 
+ *
  */
 app.use(intercept)
 
@@ -58,10 +57,9 @@ app.use(intercept)
  */
 
 middlewares.forEach(row => {
-    app.use(row)
+  app.use(row)
 })
 
-
-app.listen(config.port, function () {
-    console.log(`The server is running at ${config.hostname}:${config.port}`)
+app.listen(config.port, function() {
+  console.log(`The server is running at ${config.hostname}:${config.port}`)
 })

@@ -2,7 +2,6 @@
  * logs by jdes on 2019-03-13
  */
 
-
 const fs = require('fs')
 const FileStreamRotator = require('file-stream-rotator')
 const path = require('path')
@@ -16,12 +15,12 @@ fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
 
 // create a rotating write stream
 var accessLogStream = FileStreamRotator.getStream({
-    date_format: 'YYYYMMDD',
-    filename: path.join(logDirectory, 'debug-%DATE%.log'),
-    frequency: 'daily',
-    verbose: false
+  date_format: 'YYYYMMDD',
+  filename: path.join(logDirectory, 'debug-%DATE%.log'),
+  frequency: 'daily',
+  verbose: false
 })
 
 module.exports = {
-    stream: accessLogStream
+  stream: accessLogStream
 }

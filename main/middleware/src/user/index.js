@@ -34,6 +34,7 @@ router.post('/user/login', async (req, res, next) => {
       var ip = req.headers['x-real-ip']
         ? req.headers['x-real-ip']
         : req.ip.replace(/::ffff:/, '')
+      if (ip === '::1') ip = '127.0.0.1'
       //生成Token
       var Authorization = await token.encrypt({
         username: req.body.username,
