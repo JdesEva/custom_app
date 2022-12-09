@@ -17,7 +17,7 @@
     "body-parser": "^1.18.3",
     "co": "^4.6.0",
     "cookie-parser": "^1.4.4",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "file-stream-rotator": "^0.4.1",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.0",
