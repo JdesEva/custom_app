@@ -20,7 +20,7 @@
     "express": "^4.16.4",
     "file-stream-rotator": "^0.4.1",
     "fs": "^0.0.1-security",
-    "jsonwebtoken": "^8.5.0",
+    "jsonwebtoken": "^9.0.0",
     "log4js": "^4.0.2",
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
